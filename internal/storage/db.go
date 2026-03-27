@@ -11,25 +11,23 @@ type Storage struct {
 	pool *pgxpool.Pool
 }
 
-func New(ctx context.Context, databaseUrl string) (*Storage, error) {
-	config, err := pgxpool.ParseConfig(databaseUrl)
+func New(ctx context.Context, databaseURL string) (*Storage, error) {
+	cfg, err := pgxpool.ParseConfig(databaseURL)
 	if err != nil {
 		return nil, err
 	}
 
-	config.MaxConns = 10
-	config.MinConns = 2
-	config.MaxConnLifetime = time.Hour
-	config.MaxConnIdleTime = 30 * time.Minute
+	cfg.MaxConns = 10
+	cfg.MinConns = 2
+	cfg.MaxConnLifetime = time.Hour
+	cfg.MaxConnIdleTime = 30 * time.Minute
 
-	pool, err := pgxpool.NewWithConfig(ctx, config)
+	pool, err := pgxpool.NewWithConfig(ctx, cfg)
 	if err != nil {
 		return nil, err
 	}
 
-	return &Storage{
-		pool: pool,
-	}, nil
+	return &Storage{pool: pool}, nil
 }
 
 func (s *Storage) Close() {

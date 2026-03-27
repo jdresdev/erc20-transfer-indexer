@@ -9,12 +9,18 @@ import (
 type Config struct {
 	DatabaseURL   string
 	RPCURL        string
+	StartBlock    uint64
 	BatchSize     uint64
 	Confirmations uint64
 	PollInterval  time.Duration
 }
 
 func Load() (*Config, error) {
+	startBlock, err := getUint("START_BLOCK", 0)
+	if err != nil {
+		return nil, err
+	}
+
 	batchSize, err := getUint("BATCH_SIZE", 500)
 	if err != nil {
 		return nil, err
@@ -33,6 +39,7 @@ func Load() (*Config, error) {
 	return &Config{
 		DatabaseURL:   os.Getenv("DATABASE_URL"),
 		RPCURL:        os.Getenv("RPC_URL"),
+		StartBlock:    startBlock,
 		BatchSize:     batchSize,
 		Confirmations: confirmations,
 		PollInterval:  pollInterval,

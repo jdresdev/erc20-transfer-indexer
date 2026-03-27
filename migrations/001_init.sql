@@ -18,18 +18,18 @@ CREATE TABLE IF NOT EXISTS erc20_transfers (
 );
 
 -- idempotency
-CREATE UNIQUE INDEX erc20_transfer_unique
+CREATE UNIQUE INDEX IF NOT EXISTS erc20_transfer_unique
 ON erc20_transfers (tx_hash, log_index);
 
 -- performance indexes
-CREATE INDEX erc20_block_idx
+CREATE INDEX IF NOT EXISTS erc20_block_idx
 ON erc20_transfers (block_number);
 
-CREATE INDEX erc20_contract_idx
+CREATE INDEX IF NOT EXISTS erc20_contract_idx
 ON erc20_transfers (contract_address);
 
-CREATE INDEX erc20_from_idx
+CREATE INDEX IF NOT EXISTS erc20_from_idx
 ON erc20_transfers (from_address);
 
-CREATE INDEX erc20_to_idx
+CREATE INDEX IF NOT EXISTS erc20_to_idx
 ON erc20_transfers (to_address);
